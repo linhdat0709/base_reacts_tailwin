@@ -14,7 +14,7 @@ export const appConfig: AppConfig = {
     name: "Sample App",
     github: {
         title: "React Shadcn Starter",
-        url: "https://github.com/hayyi2/react-shadcn-starter",
+        url: "https://github.com/linhdat0709/base_reacts_tailwin",
     },
     author: {
         name: "hayyi",
