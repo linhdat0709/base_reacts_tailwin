@@ -2,9 +2,10 @@ import { cn } from "@/lib/utils";
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import Header from "./Header";
 import Body from "./Body";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import useBoolean, { BooleanHandlers } from "@/hooks/useBoolean";
+import { ROUTER } from "@/consts";
 
 const LayoutContext = createContext<{
   offset: number;
@@ -32,6 +33,7 @@ const AppLayout = ({ className, fixed = false }: LayoutProps) => {
   const divRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState(0);
   const [_isCollapsed, setIsCollapsed] = useBoolean(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const div = divRef.current;
