@@ -1,11 +1,11 @@
 import "./App.css";
 import { ThemeProvider } from "./components/ThemeProvider";
-import { Layout } from "./layout/AppLayout";
+import AppRouter from "./layout/AppRouter";
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <Layout />
+      <AppRouter />
     </ThemeProvider>
   );
 }
