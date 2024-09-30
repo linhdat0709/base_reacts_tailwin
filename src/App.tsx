@@ -1,4 +1,3 @@
-import "./App.css";
 import AxiosInterceptor from "./components/AxiosInterceptor";
 import { ThemeProvider } from "./components/ThemeProvider";
 import AppRouter from "./layout/AppRouter";
