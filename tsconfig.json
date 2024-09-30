@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
@@ -15,11 +16,23 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+=======
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+>>>>>>> refs/remotes/origin/main
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
+<<<<<<< HEAD
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
+=======
+  }
+>>>>>>> refs/remotes/origin/main
 }
