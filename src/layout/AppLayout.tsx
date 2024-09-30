@@ -1,17 +1,17 @@
 import { cn } from "@/lib/utils";
-import {
-  createContext,
-  forwardRef,
-  HTMLAttributes,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import Header from "./Header";
+import Body from "./Body";
+import { Outlet, useNavigate } from "react-router-dom";
+import Sidebar from "./Sidebar";
+import useBoolean, { BooleanHandlers } from "@/hooks/useBoolean";
+import { ROUTER } from "@/consts";
 
 const LayoutContext = createContext<{
   offset: number;
   fixed: boolean;
+  setIsCollapsed: BooleanHandlers;
+  isCollapsed: boolean;
 } | null>(null);
 
 type LayoutProps = {
@@ -20,9 +20,20 @@ type LayoutProps = {
   children?: React.ReactNode;
 };
 
-const Layout = ({ className, fixed = false, ...props }: LayoutProps) => {
+export const useLayoutContext = () => {
+  const context = useContext(LayoutContext);
+
+  if (context === undefined)
+    throw new Error("useTheme must be used within a LayoutProvider");
+
+  return context;
+};
+
+const AppLayout = ({ className, fixed = false }: LayoutProps) => {
   const divRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState(0);
+  const [_isCollapsed, setIsCollapsed] = useBoolean(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const div = divRef.current;
@@ -37,79 +48,28 @@ const Layout = ({ className, fixed = false, ...props }: LayoutProps) => {
   }, []);
 
   return (
-    <LayoutContext.Provider value={{ offset, fixed }}>
-      <div
-        ref={divRef}
-        data-layout="layout"
-        className={cn(
-          "h-full overflow-auto",
-          fixed && "flex flex-col",
-          className
-        )}
-        {...props}
-      />
+    <LayoutContext.Provider
+      value={{ offset, fixed, isCollapsed: _isCollapsed, setIsCollapsed }}
+    >
+      <Header></Header>
+      {/* <Sidebar /> */}
+      <Body>
+        <div
+          ref={divRef}
+          data-layout="layout"
+          className={cn(
+            "h-full overflow-auto",
+            fixed && "flex flex-col",
+            className
+          )}
+          // {...props}
+        >
+          <Outlet />
+        </div>
+      </Body>
     </LayoutContext.Provider>
   );
 };
-Layout.displayName = "Layout";
+AppLayout.displayName = "AppLayout";
 
-interface HeaderProps extends HTMLAttributes<HTMLDivElement> {
-  sticky?: boolean;
-}
-
-const Header = forwardRef<HTMLDivElement, HeaderProps>(
-  ({ className, sticky, ...props }, ref) => {
-    // Check if Layout.Header is used within Layout
-    const contextVal = useContext(LayoutContext);
-    if (contextVal === null) {
-      throw new Error(
-        `Layout.Header must be used within ${Layout.displayName}.`
-      );
-    }
-
-    return (
-      <div
-        ref={ref}
-        data-layout="header"
-        className={cn(
-          `z-10 flex h-[var(--header-height)] items-center gap-4 bg-background p-4 md:px-8`,
-          contextVal.offset > 10 && sticky ? "shadow" : "shadow-none",
-          contextVal.fixed && "flex-none",
-          sticky && "sticky top-0",
-          className
-        )}
-        {...props}
-      />
-    );
-  }
-);
-Header.displayName = "Header";
-
-const Body = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => {
-    // Check if Layout.Body is used within Layout
-    const contextVal = useContext(LayoutContext);
-    if (contextVal === null) {
-      throw new Error(`Layout.Body must be used within ${Layout.displayName}.`);
-    }
-
-    return (
-      <div
-        ref={ref}
-        data-layout="body"
-        className={cn(
-          "px-4 py-6 md:overflow-hidden md:px-8",
-          contextVal && contextVal.fixed && "flex-1",
-          className
-        )}
-        {...props}
-      />
-    );
-  }
-);
-Body.displayName = "Body";
-
-Layout.Header = Header;
-Layout.Body = Body;
-
-export { Layout };
+export default AppLayout;
