@@ -6,6 +6,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import useBoolean, { BooleanHandlers } from "@/hooks/useBoolean";
 import { ROUTER } from "@/consts";
+import AdminPanelLayout from "@/components/admin-panel/admin-panel-layout";
 
 const LayoutContext = createContext<{
   offset: number;
@@ -51,22 +52,9 @@ const AppLayout = ({ className, fixed = false }: LayoutProps) => {
     <LayoutContext.Provider
       value={{ offset, fixed, isCollapsed: _isCollapsed, setIsCollapsed }}
     >
-      <Header></Header>
-      {/* <Sidebar /> */}
-      <Body>
-        <div
-          ref={divRef}
-          data-layout="layout"
-          className={cn(
-            "h-full overflow-auto",
-            fixed && "flex flex-col",
-            className
-          )}
-          // {...props}
-        >
-          <Outlet />
-        </div>
-      </Body>
+      <AdminPanelLayout>
+        <Outlet />
+      </AdminPanelLayout>
     </LayoutContext.Provider>
   );
 };
