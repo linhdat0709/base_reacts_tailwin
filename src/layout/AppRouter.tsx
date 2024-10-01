@@ -4,6 +4,7 @@ import AppLayout from "./AppLayout";
 import NotFoundError from "@/pages/errors/page";
 import { ROUTER } from "@/consts";
 import SuspenseLoader from "@/components/SuspenseLoader";
+import Login from "@/pages/login";
 
 function Loadable<T extends JSX.IntrinsicAttributes>(
   WrappedComponent: ComponentType<T>
@@ -41,7 +42,7 @@ const router: RouteObject[] = [
   },
   {
     path: ROUTER.LOGIN,
-    element: <></>,
+    element: <Login />,
   },
 ];
 
